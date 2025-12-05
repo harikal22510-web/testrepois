@@ -13,32 +13,10 @@ Quick Start
 Hyperactive makes hyperparameter optimization simple. Here's a complete example
 that optimizes a custom function:
 
-.. code-block:: python
-
-    import numpy as np
-    from hyperactive.opt.gfo import HillClimbing
-
-    # 1. Define your objective function
-    def objective(params):
-        x = params["x"]
-        y = params["y"]
-        return -(x**2 + y**2)  # Hyperactive maximizes by default
-
-    # 2. Define the search space
-    search_space = {
-        "x": np.arange(-5, 5, 0.1),
-        "y": np.arange(-5, 5, 0.1),
-    }
-
-    # 3. Create an optimizer and solve
-    optimizer = HillClimbing(
-        search_space=search_space,
-        n_iter=100,
-        experiment=objective,
-    )
-    best_params = optimizer.solve()
-
-    print(f"Best parameters: {best_params}")
+.. literalinclude:: _snippets/getting_started/quick_start.py
+   :language: python
+   :start-after: # [start:full_example]
+   :end-before: # [end:full_example]
 
 That's it! Let's break down what happened:
 
@@ -61,40 +39,10 @@ Optimizing a Scikit-learn Model
 The most common use case is tuning machine learning models. Here's how to optimize
 a Random Forest classifier:
 
-.. code-block:: python
-
-    from sklearn.datasets import load_iris
-    from sklearn.ensemble import RandomForestClassifier
-    from hyperactive.experiment.integrations import SklearnCvExperiment
-    from hyperactive.opt.gfo import HillClimbing
-
-    # Load data
-    X, y = load_iris(return_X_y=True)
-
-    # Create an experiment that handles cross-validation
-    experiment = SklearnCvExperiment(
-        estimator=RandomForestClassifier(random_state=42),
-        X=X,
-        y=y,
-        cv=5,
-    )
-
-    # Define hyperparameter search space
-    search_space = {
-        "n_estimators": list(range(10, 200, 10)),
-        "max_depth": list(range(1, 20)),
-        "min_samples_split": list(range(2, 10)),
-    }
-
-    # Optimize
-    optimizer = HillClimbing(
-        search_space=search_space,
-        n_iter=50,
-        experiment=experiment,
-    )
-    best_params = optimizer.solve()
-
-    print(f"Best hyperparameters: {best_params}")
+.. literalinclude:: _snippets/getting_started/sklearn_random_forest.py
+   :language: python
+   :start-after: # [start:full_example]
+   :end-before: # [end:full_example]
 
 
 Using the Sklearn Integration
@@ -103,32 +51,10 @@ Using the Sklearn Integration
 For even simpler sklearn integration, use the ``OptCV`` wrapper that behaves like
 scikit-learn's ``GridSearchCV``:
 
-.. code-block:: python
-
-    from sklearn.svm import SVC
-    from sklearn.datasets import load_iris
-    from sklearn.model_selection import train_test_split
-    from hyperactive.integrations.sklearn import OptCV
-    from hyperactive.opt.gfo import HillClimbing
-
-    # Load and split data
-    X, y = load_iris(return_X_y=True)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-
-    # Define optimizer with search space
-    search_space = {"kernel": ["linear", "rbf"], "C": [0.1, 1, 10, 100]}
-    optimizer = HillClimbing(search_space=search_space, n_iter=20)
-
-    # Create tuned estimator (like GridSearchCV)
-    tuned_svc = OptCV(SVC(), optimizer)
-
-    # Fit and predict as usual
-    tuned_svc.fit(X_train, y_train)
-    y_pred = tuned_svc.predict(X_test)
-
-    # Access results
-    print(f"Best params: {tuned_svc.best_params_}")
-    print(f"Best estimator: {tuned_svc.best_estimator_}")
+.. literalinclude:: _snippets/getting_started/sklearn_optcv.py
+   :language: python
+   :start-after: # [start:full_example]
+   :end-before: # [end:full_example]
 
 
 Choosing an Optimizer
@@ -155,16 +81,15 @@ Hyperactive provides many optimization algorithms. Here are some common choices:
 
 Example with Bayesian Optimization:
 
-.. code-block:: python
+.. literalinclude:: _snippets/getting_started/bayesian_optimizer.py
+   :language: python
+   :start-after: # [start:full_example]
+   :end-before: # [end:full_example]
 
-    from hyperactive.opt.gfo import BayesianOptimizer
-
-    optimizer = BayesianOptimizer(
-        search_space=search_space,
-        n_iter=30,
-        experiment=experiment,
-    )
-    best_params = optimizer.solve()
+.. literalinclude:: _snippets/getting_started/bayesian_optimizer.py
+   :language: python
+   :start-after: # [start:optimizer_usage]
+   :end-before: # [end:optimizer_usage]
 
 
 Next Steps

@@ -146,78 +146,24 @@ Get started in just a few lines of code:
 
    .. tab-item:: Custom Function
 
-      .. code-block:: python
-
-         import numpy as np
-         from hyperactive.opt.gfo import HillClimbing
-
-         # Define your objective function
-         def objective(params):
-             x, y = params["x"], params["y"]
-             return -(x**2 + y**2)  # Maximize (minimize negative)
-
-         # Define the search space
-         search_space = {
-             "x": np.arange(-5, 5, 0.1),
-             "y": np.arange(-5, 5, 0.1),
-         }
-
-         # Create optimizer and solve
-         optimizer = HillClimbing(
-             search_space=search_space,
-             n_iter=100,
-             experiment=objective,
-         )
-         best_params = optimizer.solve()
-         print(f"Best parameters: {best_params}")
+      .. literalinclude:: _snippets/getting_started/index_custom_function.py
+         :language: python
+         :start-after: # [start:full_example]
+         :end-before: # [end:full_example]
 
    .. tab-item:: Scikit-learn Tuning
 
-      .. code-block:: python
-
-         from sklearn.svm import SVC
-         from sklearn.datasets import load_iris
-         from sklearn.model_selection import train_test_split
-         from hyperactive.integrations.sklearn import OptCV
-         from hyperactive.opt.gfo import HillClimbing
-
-         # Load data
-         X, y = load_iris(return_X_y=True)
-         X_train, X_test, y_train, y_test = train_test_split(X, y)
-
-         # Define optimizer with search space
-         search_space = {"kernel": ["linear", "rbf"], "C": [0.1, 1, 10]}
-         optimizer = HillClimbing(search_space=search_space, n_iter=20)
-
-         # Create tuned estimator and fit
-         tuned_svc = OptCV(SVC(), optimizer)
-         tuned_svc.fit(X_train, y_train)
-
-         print(f"Best params: {tuned_svc.best_params_}")
+      .. literalinclude:: _snippets/getting_started/index_sklearn_tuning.py
+         :language: python
+         :start-after: # [start:full_example]
+         :end-before: # [end:full_example]
 
    .. tab-item:: Bayesian Optimization
 
-      .. code-block:: python
-
-         import numpy as np
-         from hyperactive.opt.gfo import BayesianOptimizer
-
-         def complex_objective(params):
-             x = params["x"]
-             y = params["y"]
-             return -((x - 2)**2 + (y + 1)**2) + np.sin(x * y)
-
-         search_space = {
-             "x": np.linspace(-5, 5, 100),
-             "y": np.linspace(-5, 5, 100),
-         }
-
-         optimizer = BayesianOptimizer(
-             search_space=search_space,
-             n_iter=50,
-             experiment=complex_objective,
-         )
-         best_params = optimizer.solve()
+      .. literalinclude:: _snippets/getting_started/index_bayesian.py
+         :language: python
+         :start-after: # [start:full_example]
+         :end-before: # [end:full_example]
 
 ----
 
