@@ -14,6 +14,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  CI_IMAGE: ghcr.io/simonblanke/hyperactive-ci
+
 jobs:
   # ===========================================================================
   # STAGE 0: Detect what changed (runs immediately)
@@ -114,26 +117,18 @@ jobs:
   code-quality:
     name: code-quality
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py3.11
     steps:
-      - name: repository checkout step
-        uses: actions/checkout@v5
-
-      - name: python environment step
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: install pre-commit
-        run: python3 -m pip install --no-cache-dir pre-commit
-
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Get changed files
         id: changed-files
         run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | tr '\n' ' ')
           echo "CHANGED_FILES=${CHANGED_FILES}" >> $GITHUB_ENV
 
@@ -163,22 +158,29 @@ jobs:
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.os == 'ubuntu-latest' && format('{0}:py{1}', 'ghcr.io/simonblanke/hyperactive-ci', matrix.python-version) || '' }}
     timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
+        if: matrix.os != 'ubuntu-latest'
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: Install dependencies (non-container)
+        if: matrix.os != 'ubuntu-latest'
         run: |
           python -m pip install --no-cache-dir --upgrade pip
           python -m pip install --no-cache-dir build
-
           make install-no-extras-for-test
+
+      - name: Install package (container)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          pip install --no-cache-dir -e .[test]
 
       - name: Show dependencies
         run: python -m pip list
@@ -201,22 +203,29 @@ jobs:
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.os == 'ubuntu-latest' && format('{0}:py{1}', 'ghcr.io/simonblanke/hyperactive-ci', matrix.python-version) || '' }}
     timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
+        if: matrix.os != 'ubuntu-latest'
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: Install dependencies (non-container)
+        if: matrix.os != 'ubuntu-latest'
         run: |
           python -m pip install --no-cache-dir --upgrade pip
           python -m pip install --no-cache-dir build
-
           make install-all-extras-for-test
+
+      - name: Install package (container)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          pip install --no-cache-dir -e .[all_extras,test,sktime-integration]
 
       - name: Show dependencies
         run: python -m pip list
@@ -229,6 +238,8 @@ jobs:
     name: test-sklearn-${{ matrix.sklearn-version }}-python-${{ matrix.python-version }}
     needs: [targeted-tests-gate]
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py${{ matrix.python-version }}
 
     strategy:
       fail-fast: false
@@ -239,15 +250,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies for scikit-learn ${{ matrix.sklearn-version }}
+      - name: Install package and specific sklearn version
         run: |
-          python -m pip install --no-cache-dir --upgrade pip
-          python -m pip install --no-cache-dir .[all_extras,test] scikit-learn==${{ matrix.sklearn-version }}.*
+          pip install --no-cache-dir -e .[all_extras,test]
+          pip install --no-cache-dir scikit-learn==${{ matrix.sklearn-version }}.*
 
       - name: Show dependencies
         run: python -m pip list
@@ -256,51 +262,24 @@ jobs:
         run: |
           python -m pytest -x -p no:warnings src/hyperactive/integrations/sklearn/
 
-  doctest:
-    name: doctest
-    needs: [code-quality]
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --no-cache-dir --upgrade pip
-          python -m pip install --no-cache-dir .[all_extras,test,sktime-integration]
-
-      - name: Run doctests
-        run: |
-          python -m pytest --doctest-modules src/hyperactive/ -v
-
   # ===========================================================================
   # STAGE 2: Targeted tests (only for changed areas, fast feedback)
   # ===========================================================================
   targeted-core:
     name: targeted-core
-    needs: [code-quality, doctest, detect-changes]
+    needs: [code-quality, detect-changes]
     if: needs.detect-changes.outputs.core == 'true' || needs.detect-changes.outputs.any_src == 'false'
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py3.11
     timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
+      - name: Install package
         run: |
-          python -m pip install --no-cache-dir --upgrade pip
-          python -m pip install --no-cache-dir .[test]
+          pip install --no-cache-dir -e .[test]
 
       - name: Run core tests
         run: |
@@ -308,23 +287,19 @@ jobs:
 
   targeted-sklearn:
     name: targeted-sklearn
-    needs: [code-quality, doctest, detect-changes]
+    needs: [code-quality, detect-changes]
     if: needs.detect-changes.outputs.sklearn == 'true'
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py3.11
     timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
+      - name: Install package
         run: |
-          python -m pip install --no-cache-dir --upgrade pip
-          python -m pip install --no-cache-dir .[all_extras,test]
+          pip install --no-cache-dir -e .[all_extras,test]
 
       - name: Run sklearn integration tests
         run: |
@@ -332,23 +307,19 @@ jobs:
 
   targeted-sktime:
     name: targeted-sktime
-    needs: [code-quality, doctest, detect-changes]
+    needs: [code-quality, detect-changes]
     if: needs.detect-changes.outputs.sktime == 'true'
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py3.11
     timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
+      - name: Install package
         run: |
-          python -m pip install --no-cache-dir --upgrade pip
-          python -m pip install --no-cache-dir .[sktime-integration,test]
+          pip install --no-cache-dir -e .[sktime-integration,test]
 
       - name: Run sktime integration tests
         run: |
@@ -356,23 +327,19 @@ jobs:
 
   targeted-skpro:
     name: targeted-skpro
-    needs: [code-quality, doctest, detect-changes]
+    needs: [code-quality, detect-changes]
     if: needs.detect-changes.outputs.skpro == 'true'
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py3.11
     timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
+      - name: Install package
         run: |
-          python -m pip install --no-cache-dir --upgrade pip
-          python -m pip install --no-cache-dir .[sktime-integration,test]
+          pip install --no-cache-dir -e .[sktime-integration,test]
 
       - name: Run skpro integration tests
         run: |
@@ -380,23 +347,19 @@ jobs:
 
   targeted-utils:
     name: targeted-utils
-    needs: [code-quality, doctest, detect-changes]
+    needs: [code-quality, detect-changes]
     if: needs.detect-changes.outputs.utils == 'true'
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py3.11
     timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
+      - name: Install package
         run: |
-          python -m pip install --no-cache-dir --upgrade pip
-          python -m pip install --no-cache-dir .[test,test_parallel_backends]
+          pip install --no-cache-dir -e .[test]
 
       - name: Run utils tests
         run: |
@@ -435,20 +398,16 @@ jobs:
     name: coverage
     needs: [targeted-tests-gate]
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py3.11
     timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
+      - name: Install package
         run: |
-          python -m pip install --no-cache-dir --upgrade pip
-          python -m pip install --no-cache-dir .[all_extras,test,test_parallel_backends]
+          pip install --no-cache-dir -e .[all_extras,test,sktime-integration]
 
       - name: Run tests with coverage
         run: |
@@ -461,10 +420,31 @@ jobs:
           fail_ci_if_error: false
           verbose: true
 
+  doctest-examples:
+    name: doctest-examples
+    needs: [targeted-tests-gate]
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py3.11
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install package with all dependencies
+        run: |
+          pip install --no-cache-dir -e .[all_extras,test,sktime-integration]
+
+      - name: Run docstring example tests
+        run: |
+          python -m pytest --doctest-modules src/hyperactive/ -v -p no:warnings
+
   test-examples:
     name: test-examples
     needs: [targeted-tests-gate]
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/simonblanke/hyperactive-ci:py3.11
     timeout-minutes: 15
 
     steps:
@@ -472,14 +452,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
       - name: Check for example changes
         id: check-examples
         run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           if [ "${{ github.event_name }}" == "push" ]; then
             # For pushes, compare with previous commit
             CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep "^examples/" || true)
@@ -497,12 +473,10 @@ jobs:
             echo "No example files changed"
           fi
 
-      - name: Install dependencies
+      - name: Install package
         if: steps.check-examples.outputs.examples_changed == 'true'
         run: |
-          python -m pip install --no-cache-dir --upgrade pip
-          python -m pip install --no-cache-dir build
-          make install-all-extras-for-test
+          pip install --no-cache-dir -e .[all_extras,test,sktime-integration]
 
       - name: Show dependencies
         if: steps.check-examples.outputs.examples_changed == 'true'
