@@ -57,6 +57,8 @@ alongside direct interfaces to Optuna and scikit-learn optimizers.
 
 ----
 
+.. _features:
+
 Features
 ================
 
@@ -341,6 +343,9 @@ Get started in just a few lines of code:
       </div>
    </div>
 
+   <!-- Back to Top Button -->
+   <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
    <script>
    document.addEventListener('DOMContentLoaded', function() {
       // Handle vertical tabs (Quick Example)
@@ -392,6 +397,22 @@ Get started in just a few lines of code:
             });
          });
       });
+
+      // Back to Top button
+      const backToTop = document.getElementById('backToTop');
+      if (backToTop) {
+         window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) {
+               backToTop.classList.add('visible');
+            } else {
+               backToTop.classList.remove('visible');
+            }
+         });
+
+         backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+         });
+      }
    });
    </script>
 

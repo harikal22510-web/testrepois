@@ -4,7 +4,7 @@
 /* ============================================
    Google Font Import for Hero Title
    ============================================ */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap');
 
 /* ============================================
    PyData Theme Color Overrides (purple theme)
@@ -110,21 +110,71 @@ html[data-theme="dark"] {
 }
 
 .hero-title {
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Raleway', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 3.5rem;
-    font-weight: 700;
+    font-weight: 300;
     color: #ffffff;
-    margin: 0 0 1rem 0;
-    letter-spacing: -0.02em;
+    margin: 0 0 3.5rem 0;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 .hero-tagline {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
     margin: 0 0 0.5rem 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    letter-spacing: 0.05em;
+    font-style: italic;
+}
+
+/* ============================================
+   Back to Top Button
+   ============================================ */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 44px;
+    height: 44px;
+    background: var(--hyperactive-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease;
+    z-index: 1000;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+html[data-theme="dark"] .back-to-top {
+    background: var(--hyperactive-secondary);
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+    }
 }
 
 .hero-subtitle {
