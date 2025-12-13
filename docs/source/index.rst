@@ -24,7 +24,7 @@
          <div class="stat-label">Integrations</div>
       </div>
       <div class="stat-item">
-         <div class="stat-value">1</div>
+         <div class="stat-value">One</div>
          <div class="stat-label">Unified API</div>
       </div>
    </div>

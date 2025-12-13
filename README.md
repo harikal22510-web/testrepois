@@ -2,8 +2,15 @@
 ## Welcome to hyperactive
 
 <p align="center">
-  <a href="https://github.com/SimonBlanke/Hyperactive"><img src="./docs/images/logo.png" width="300" align="right"></a>
+  <a href="https://github.com/SimonBlanke/Hyperactive">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./docs/images/hyperactive_logo_ink_dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="./docs/images/hyperactive_logo_ink.svg">
+      <img src="./docs/images/hyperactive_logo_ink.svg" width="350" align="right" alt="Hyperactive Logo">
+    </picture>
+  </a>
 </p>
+
 
 **A unified interface for optimization algorithms and problems.**
 
