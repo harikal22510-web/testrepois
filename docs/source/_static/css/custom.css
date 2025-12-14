@@ -273,6 +273,11 @@ html[data-theme="dark"] .back-to-top-sidebar a:hover {
     background: var(--pst-color-background);
 }
 
+a.stat-item {
+    text-decoration: none;
+    color: inherit;
+}
+
 .stat-value {
     font-size: 1.75rem;
     font-weight: 700;
