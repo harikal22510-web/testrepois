@@ -1298,3 +1298,23 @@ html[data-theme="dark"] .segmented-tab-btn.active {
         padding: 0.5rem 0.75rem;
     }
 }
+
+/* ============================================
+   Theme-Aware Diagrams
+   ============================================ */
+
+/* Container for theme-aware images */
+.theme-aware-diagram {
+    width: 100%;
+    text-align: center;
+}
+
+.theme-aware-diagram img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Override pydata theme's white background for diagram images */
+html[data-theme="dark"] .theme-aware-diagram img.only-dark {
+    background-color: transparent !important;
+}
