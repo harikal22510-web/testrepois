@@ -10,11 +10,10 @@
 
 <!-- Mark the applicable option with [x] -->
 
-- [ ] `[Fix]` - Bug fix (non-breaking change fixing an issue)
-- [ ] `[Feature]` - New feature (non-breaking change adding functionality)
-- [ ] `[Refactor]` - Code refactoring (no functional changes)
-- [ ] `[Release]` - Release preparation
-- [ ] `[Hotfix]` - Critical fix for production
+- [ ] `[BUG]` - Bug fix (non-breaking change fixing an issue)
+- [ ] `[ENH]` - New feature (non-breaking change adding functionality)
+- [ ] `[DOC]` - Documentation changes
+- [ ] `[MNT]` - Maintenance
 
 ## How was this solved?
 
