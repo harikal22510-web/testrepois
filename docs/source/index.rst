@@ -12,20 +12,40 @@
    <!-- Stats are auto-counted in conf.py: n_algorithms, n_backends, n_integrations -->
    <div class="stats-strip">
       <a href="user_guide/optimizers/index.html" class="stat-item">
-         <div class="stat-value" id="stat-algorithms">31</div>
-         <div class="stat-label">Algorithms</div>
+         <div class="stat-front">
+            <div class="stat-value" id="stat-algorithms">31</div>
+            <div class="stat-label">Algorithms</div>
+         </div>
+         <div class="stat-hover">
+            <div class="stat-hover-text">Bayesian · Particle Swarm · Genetic · Simulated Annealing ...</div>
+         </div>
       </a>
       <a href="user_guide/optimizers/index.html" class="stat-item">
-         <div class="stat-value" id="stat-backends">3</div>
-         <div class="stat-label">Backends</div>
+         <div class="stat-front">
+            <div class="stat-value" id="stat-backends">3</div>
+            <div class="stat-label">Backends</div>
+         </div>
+         <div class="stat-hover">
+            <div class="stat-hover-text">GFO · Optuna · sklearn</div>
+         </div>
       </a>
       <a href="user_guide/integrations.html" class="stat-item">
-         <div class="stat-value" id="stat-integrations">5</div>
-         <div class="stat-label">Integrations</div>
+         <div class="stat-front">
+            <div class="stat-value" id="stat-integrations">5</div>
+            <div class="stat-label">Integrations</div>
+         </div>
+         <div class="stat-hover">
+            <div class="stat-hover-text">sklearn · sktime · skpro · PyTorch</div>
+         </div>
       </a>
       <a href="user_guide/experiments.html" class="stat-item">
-         <div class="stat-value">One</div>
-         <div class="stat-label">Unified API</div>
+         <div class="stat-front">
+            <div class="stat-value">One</div>
+            <div class="stat-label">Unified API</div>
+         </div>
+         <div class="stat-hover">
+            <div class="stat-hover-text">Same interface for all algorithms</div>
+         </div>
       </a>
    </div>
 
