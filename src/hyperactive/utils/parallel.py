@@ -270,7 +270,7 @@ def _get_parallel_test_fixtures(naming="estimator"):
         fixtures.append({"backend": "dask", "backend_params": {"scheduler": "sync"}})
 
     # test ray backend
-    """ TODO: faster ray test
+    """ TODO: Faster ray test
     if _check_soft_dependencies("ray", severity="none"):
         import os
 

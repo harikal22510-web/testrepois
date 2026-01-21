@@ -65,9 +65,11 @@ def create_badge_svg(label: str, value: str, color: str, label_width: int = None
   <!-- Value background -->
   <rect x="{lw}" width="{vw}" height="{height}" fill="{color}"/>
   <!-- Label text -->
-  <text x="{lw/2}" y="14" fill="#fff" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11" text-anchor="middle">{label}</text>
+  <text x="{lw/2}" y="14" fill="#fff" font-family="DejaVu Sans,Verdana,Geneva,sans-serif"
+          font-size="11" text-anchor="middle">{label}</text>
   <!-- Value text -->
-  <text x="{lw + vw/2}" y="14" fill="#fff" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11" text-anchor="middle">{value}</text>
+  <text x="{lw + vw/2}" y="14" fill="#fff" font-family="DejaVu Sans,Verdana,Geneva,sans-serif"
+          font-size="11" text-anchor="middle">{value}</text>
 </svg>'''
 
     return svg
@@ -95,7 +97,8 @@ def create_simple_badge_svg(text: str, color: str, width: int = None, font_size:
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{height}">
   <title>{text}</title>
   <rect width="{w}" height="{height}" fill="{color}"/>
-  <text x="{w/2}" y="{text_y}" fill="#fff" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="{font_size}" text-anchor="middle" font-weight="600">{text}</text>
+  <text x="{w/2}" y="{text_y}" fill="#fff" font-family="DejaVu Sans,Verdana,Geneva,sans-serif"
+        font-size="{font_size}" text-anchor="middle" font-weight="600">{text}</text>
 </svg>'''
 
     return svg

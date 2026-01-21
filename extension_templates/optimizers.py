@@ -23,27 +23,27 @@ Mandatory methods:
 Testing - required for automated test framework and check_estimator usage:
     get default parameters for test instance(s) - get_test_params()
 """
-# todo: write an informative docstring for the file or module, remove the above
-# todo: add an appropriate copyright notice for your estimator
+# TODO: write an informative docstring for the file or module, remove the above
+# TODO: add an appropriate copyright notice for your estimator
 #       estimators contributed should have the copyright notice at the top
 #       estimators of your own do not need to have permissive or MIT copyright
 
-# todo: uncomment the following line, enter authors' GitHub IDs
+# TODO: uncomment the following line, enter authors' GitHub IDs
 # __author__ = [authorGitHubID, anotherAuthorGitHubID]
 
 from hyperactive.base import BaseOptimizer
 
-# todo: add any necessary imports here
+# TODO: add any necessary imports here
 
-# todo: for imports of soft dependencies:
+# TODO: for imports of soft dependencies:
 # make sure to fill in the "python_dependencies" tag with the package import name
 # import soft dependencies only inside methods of the class, not at the top of the file
 
 
 class MyOptimizer(BaseOptimizer):
-    """Custom optimizer. todo: write docstring.
+    """Custom optimizer. TODO: write docstring.
 
-    todo: describe your custom optimizer here
+    TODO: describe your custom optimizer here
 
     Parameters
     ----------
@@ -64,7 +64,7 @@ class MyOptimizer(BaseOptimizer):
     ... )
     """
 
-    # todo: fill in tags - most tags have sensible defaults below
+    # TODO: fill in tags - most tags have sensible defaults below
     _tags = {
         # tags and full specifications are available in the tag API reference
         # TO BE ADDED
@@ -109,9 +109,9 @@ class MyOptimizer(BaseOptimizer):
         # delete tag if no soft dependency requirement
     }
 
-    # todo: add any hyper-parameters and components to constructor
+    # TODO: add any hyper-parameters and components to constructor
     def __init__(self, parama, paramb="default", paramc=None, experiment=None):
-        # todo: write any hyper-parameters to self
+        # TODO: write any hyper-parameters to self
         self.parama = parama
         self.paramb = paramb
         self.paramc = paramc
@@ -123,7 +123,7 @@ class MyOptimizer(BaseOptimizer):
         # leave this as is
         super().__init__()
 
-        # todo: optional, parameter checking logic (if applicable) should happen here
+        # TODO: optional, parameter checking logic (if applicable) should happen here
         # if writes derived values to self, should *not* overwrite self.parama etc
         # instead, write to self._parama, self._newparam (starting with _)
 
@@ -146,7 +146,7 @@ class MyOptimizer(BaseOptimizer):
         # this return is available in _run as search_config
         return search_config
 
-    # todo: implement this, mandatory
+    # TODO: implement this, mandatory
     def _solve(self, experiment, **search_config):
         """Run the optimization search process to maximize the experiment's score.
 

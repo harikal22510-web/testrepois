@@ -24,27 +24,27 @@ Mandatory methods:
 Testing - required for automated test framework and check_estimator usage:
     get default parameters for test instance(s) - get_test_params()
 """
-# todo: write an informative docstring for the file or module, remove the above
-# todo: add an appropriate copyright notice for your estimator
+# TODO: write an informative docstring for the file or module, remove the above
+# TODO: add an appropriate copyright notice for your estimator
 #       estimators contributed should have the copyright notice at the top
 #       estimators of your own do not need to have permissive or MIT copyright
 
-# todo: uncomment the following line, enter authors' GitHub IDs
+# TODO: uncomment the following line, enter authors' GitHub IDs
 # __author__ = [authorGitHubID, anotherAuthorGitHubID]
 
 from hyperactive.base import BaseExperiment
 
-# todo: add any necessary imports here
+# TODO: add any necessary imports here
 
-# todo: for imports of soft dependencies:
+# TODO: for imports of soft dependencies:
 # make sure to fill in the "python_dependencies" tag with the package import name
 # import soft dependencies only inside methods of the class, not at the top of the file
 
 
 class MyExperiment(BaseExperiment):
-    """Custom experiment. todo: write docstring.
+    """Custom experiment. TODO: write docstring.
 
-    todo: describe your custom experiment here
+    TODO: describe your custom experiment here
 
     Parameters
     ----------
@@ -65,7 +65,7 @@ class MyExperiment(BaseExperiment):
     ... )
     """
 
-    # todo: fill in tags - most tags have sensible defaults below
+    # TODO: fill in tags - most tags have sensible defaults below
     _tags = {
         # tags and full specifications are available in the tag API reference
         # TO BE ADDED
@@ -121,9 +121,9 @@ class MyExperiment(BaseExperiment):
         # delete tag if no soft dependency requirement
     }
 
-    # todo: add any hyper-parameters and components to constructor
+    # TODO: add any hyper-parameters and components to constructor
     def __init__(self, parama, paramb="default", paramc=None):
-        # todo: write any hyper-parameters to self
+        # TODO: write any hyper-parameters to self
         self.parama = parama
         self.paramb = paramb
         self.paramc = paramc
