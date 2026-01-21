@@ -12,6 +12,10 @@
 #
 # =============================================================================
 
+template: |
+  ## Changes
+  $CHANGES
+
 autolabeler:
   - label: 'documentation'
     files:
