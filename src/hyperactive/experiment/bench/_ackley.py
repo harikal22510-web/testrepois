@@ -13,7 +13,9 @@ class Ackley(BaseExperiment):
     It is defined as:
 
     .. math::
-        f(x) = -a \cdot \exp(-\frac{b}{\sqrt{d}\left\|x\right\|}) - \exp(\frac{1}{d} \sum_{i=1}^d\cos (c x_i) ) + a + \exp(1)
+        f(x) = -a \cdot \exp(-\frac{b}{\sqrt{d}\left\|x\right\|}) -
+               \exp(\frac{1}{d} \sum_{i=1}^d\cos (c x_i) ) +
+               a + \exp(1)
 
     where :math:`a` (= `a`), :math:`b` (= `b`), and :math:`c` (= `c`) are constants,
     :math:`d` (= `d`) is the number of dimensions of the real input vector :math:`x`,

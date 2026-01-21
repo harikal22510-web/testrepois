@@ -90,7 +90,10 @@ def run_example(example_path, timeout=120):
 class TestExamples:
     """Test class for all Hyperactive examples."""
 
-    @pytest.mark.parametrize("example_path", ALL_EXAMPLES, ids=lambda x: str(x.relative_to(get_hyperactive_root())) if ALL_EXAMPLES else "no_examples")
+    @pytest.mark.parametrize(
+        "example_path", ALL_EXAMPLES,
+        ids=lambda x: str(x.relative_to(get_hyperactive_root())) if ALL_EXAMPLES else "no_examples"
+    )
     def test_example_runs_successfully(self, example_path):
         """Test that an example runs without errors."""
         if not ALL_EXAMPLES:
