@@ -13,7 +13,7 @@ from hyperactive.utils.parallel import _get_parallel_test_fixtures, parallelize
 
 @pytest.mark.skipif(
     not _check_soft_dependencies("ray", severity="none"),
-    reason="Execute tests for iff anything in the module has changed",
+    reason="Execute tests if anything in the module has changed",
 )
 def test_ray_leaves_params_invariant():
     """Test that the parallelize function leaves backend_params invariant."""

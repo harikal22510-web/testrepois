@@ -57,7 +57,6 @@ from hyperactive.opt.optuna import QMCOptimizer
 
 # Load dataset
 X, y = load_wine(return_X_y=True)
-print(f"Dataset: Wine classification ({X.shape[0]} samples, {X.shape[1]} features)")
 
 # Create experiment
 estimator = LogisticRegression(random_state=42, max_iter=1000)
@@ -103,7 +102,6 @@ optimizer = QMCOptimizer(
 best_params = optimizer.solve()
 
 # Results
-print("\n=== Results ===")
 print(f"Best parameters: {best_params}")
 print(f"Best score: {optimizer.best_score_:.4f}")
 print()
