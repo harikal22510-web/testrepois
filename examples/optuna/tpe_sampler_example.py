@@ -26,7 +26,6 @@ def main():
 
     # Load dataset
     X, y = load_wine(return_X_y=True)
-    print(f"Dataset: Wine classification ({X.shape[0]} samples, {X.shape[1]} features)")
 
     # Create experiment
     estimator = RandomForestClassifier(random_state=42)
@@ -73,7 +72,6 @@ def main():
     best_params = optimizer.solve()
 
     # Results
-    print("\n=== Results ===")
     print(f"Best parameters: {best_params}")
     print(f"Best score: {optimizer.best_score_:.4f}")
     print()

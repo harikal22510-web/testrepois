@@ -24,7 +24,6 @@ from hyperactive.opt import GridSearchSk
 
 # Load dataset
 X, y = load_wine(return_X_y=True)
-print(f"Dataset: Wine classification ({X.shape[0]} samples, {X.shape[1]} features)")
 
 # Create experiment
 estimator = RandomForestClassifier(random_state=42)
@@ -45,8 +44,6 @@ total_combinations = 1
 for param_values in param_grid.values():
     total_combinations *= len(param_values)
 
-print(f"Total parameter combinations to evaluate: {total_combinations}")
-
 # Configure Sklearn Grid Search
 optimizer = GridSearchSk(
     param_grid=param_grid,
@@ -59,7 +56,6 @@ optimizer = GridSearchSk(
 best_params = optimizer.solve()
 
 # Results
-print("\n=== Results ===")
 print(f"Best parameters: {best_params}")
 print(f"Best score: {optimizer.best_score_:.4f}")
 print(f"Exhaustively evaluated {total_combinations} combinations")

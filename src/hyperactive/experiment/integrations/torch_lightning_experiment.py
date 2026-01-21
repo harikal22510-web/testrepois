@@ -4,7 +4,9 @@
 
 __author__ = ["amitsubhashchejara"]
 
-import numpy as np
+import logging
+
+logger = logging.getLogger(__name__)
 
 from hyperactive.base import BaseExperiment
 
@@ -195,7 +197,7 @@ class TorchExperiment(BaseExperiment):
             return val_result, metadata
 
         except Exception as e:
-            print(f"Training failed with params {params}: {e}")
+            logger.error(f"Training failed with params {params}: {e}")
             return np.float64(float("inf")), {}
 
     @classmethod
